@@ -6,7 +6,7 @@ HappyDoggyLifeは、愛犬の健康と日常生活をサポートするアプリ
 ## 技術構成
 HappyDoggyLifeの開発には、以下の技術スタックを採用しています：
 
-- フロントエンド: React
+- フロントエンド: React（本番リリース以後対応予定・MVP時はRailsで実装）
 - バックエンド: Ruby on Rails
 - データベース: MySQL
 - オートコンプリート: jQuery UI Autocomplete
