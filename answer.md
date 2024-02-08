@@ -3,43 +3,51 @@
 ```mermaid
 
 erDiagram
-    USER ||--o{ DOG : has
-    USER {
-        string username
-        string email
-        string password
+    USERS {
+        string email PK "ユニーク、必須"
+        string encrypted_password "必須"
+        string reset_password_token "ユニーク"
+        datetime reset_password_sent_at
+        datetime remember_created_at
+        integer sign_in_count "デフォルトは0"
+        datetime current_sign_in_at
+        datetime last_sign_in_at
+        string current_sign_in_ip
+        string last_sign_in_ip
+        string name "以前のusernameをnameに変更"
     }
-    DOG {
+    DOGS {
+        int id PK
         string name
         string breed
-        date birthday
-        string gender
+        date birthdate
+        string gender "enumを検討する（'Male', 'Female', 'Unknown'）"
+        int user_id FK "ユーザーID"
     }
-    USER ||--o{ FEEDING-RECORD : logs
-    FEEDING-RECORD {
-        date date
-        float quantity
+    WALK_RECORDS {
+        int id PK
+        string date
+        string route "ユーザーが自由に散歩ルートの名前を入力できる"
+        int duration "散歩にかかった時間（分単位）"
+        string notes "散歩ルートの詳細メモ（実際の通過点など）"
+        int dog_id FK "犬のID"
     }
-    USER ||--o{ HEALTH-RECORD : records
-    HEALTH-RECORD {
-        date date
-        float weight
-        int sleepHours
+    FOOD_RECORDS {
+        int id PK
+        string food_type "フードの種類（市販フード、手作り食など）"
+        string description "フードの詳細説明（材料、重量など）"
+        int dog_id FK "犬のID"
     }
-    USER ||--o{ WALK-RECORD : tracks
-    WALK-RECORD {
-        date date
-        string route
-        int duration
+    EXPENSE_RECORDS {
+        int id PK
+        string category "enumを検討する（'Food', 'Medical', 'Grooming'など）"
+        decimal amount
+        string date
+        string notes "支出の詳細メモ"
+        int user_id FK "ユーザーID"
     }
-    DOG ||--o{ BOWL : uses
-    BOWL {
-        string size
-        string material
-    }
-    USER ||--o{ EXPENSE-RECORD : notes
-    EXPENSE-RECORD {
-        string category
-        float amount
-        date date
-    }
+    USERS ||--o{ DOGS : "has"
+    USERS ||--o{ WALK_RECORDS : "logs"
+    DOGS ||--o{ FOOD_RECORDS : "eats"
+    USERS ||--o{ EXPENSE_RECORDS : "spends"
+
